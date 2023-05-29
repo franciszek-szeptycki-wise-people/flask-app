@@ -5,18 +5,33 @@ on:
       - main
 
 jobs:
-  build-and-deploy:
+    build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: executing remote ssh commands using password
-        uses: appleboy/ssh-action@master
+    - name: Checkout code
+        uses: actions/checkout@v2
+
+    - name: Setup DigitalOcean doctl
+        uses: digitalocean/action-doctl@v2
         with:
-          host: ${{ secrets.DROPLET_IP }}
-          username: ${{ secrets.DROPLET_SSH_USER }}
-          key: ${{ secrets.DROPLET_SSH_KEY }}
-          script: |
-            cd /flask-app
-            docker rm $(docker ps -a -q)
-            git pull
-            docker build -t my-docker-image .
-            docker run -d -p 8000:8000 my-docker-image
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+    - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+        ssh-private-key: ${{ secrets.DROPLET_SSH_KEY }}
+    
+    - name: Add droplet to known hosts
+        run: |
+        ssh-keyscan ${{ secrets.DROPLET_IP }} >> ~/.ssh/known_hosts
+
+    - name: Execute commands on the droplet
+        run: |
+        ssh ${{ secrets.DROPLET_SSH_USER }}@${{ secrets.DROPLET_IP }} "
+        cd /path/to/your/project
+        git pull
+        npm install
+        pm2 restart all
+        "
+
+
