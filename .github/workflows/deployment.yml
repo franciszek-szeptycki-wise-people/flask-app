@@ -15,4 +15,11 @@ jobs:
           username: ${{ secrets.DROPLET_SSH_USER }}
           key: ${{ secrets.DROPLET_SSH_KEY }}
           script: |
-            touch 1.txt
+            cd flask-app
+            git pull
+
+            docker stop $(docker ps -aq)
+            docker rm $(docker ps -aq)
+
+            docker pull my-docker-image
+            docker run -d <your-image-name>
