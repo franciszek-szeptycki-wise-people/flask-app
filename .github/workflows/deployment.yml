@@ -5,33 +5,31 @@ on:
       - main
 
 jobs:
-    build-and-deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
+      - name: Checkout code
         uses: actions/checkout@v2
 
-    - name: Setup DigitalOcean doctl
+      - name: Setup DigitalOcean doctl
         uses: digitalocean/action-doctl@v2
         with:
-        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
 
-    - name: Setup SSH
+      - name: Setup SSH
         uses: webfactory/ssh-agent@v0.5.3
         with:
-        ssh-private-key: ${{ secrets.DROPLET_SSH_KEY }}
-    
-    - name: Add droplet to known hosts
+          ssh-private-key: ${{ secrets.DROPLET_SSH_KEY }}
+
+      - name: Add droplet to known hosts
         run: |
-        ssh-keyscan ${{ secrets.DROPLET_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan ${{ secrets.DROPLET_IP }} >> ~/.ssh/known_hosts
 
-    - name: Execute commands on the droplet
+      - name: Execute commands on the droplet
         run: |
-        ssh ${{ secrets.DROPLET_SSH_USER }}@${{ secrets.DROPLET_IP }} "
-        cd /path/to/your/project
-        git pull
-        npm install
-        pm2 restart all
-        "
-
-
+          ssh ${{ secrets.DROPLET_SSH_USER }}@${{ secrets.DROPLET_IP }} "
+          cd /path/to/your/project
+          git pull
+          npm install
+          pm2 restart all
+          "
