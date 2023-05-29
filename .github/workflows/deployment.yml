@@ -23,4 +23,4 @@ jobs:
             docker rmi $(docker images -aq)
 
             docker pull my-docker-image
-            docker run -p 8000:8000 my-docker-image
+            docker run -dp 8000:8000 my-docker-image
