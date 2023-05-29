@@ -22,4 +22,4 @@ jobs:
             docker rm $(docker ps -aq)
 
             docker pull my-docker-image
-            docker run -d <your-image-name>
+            docker run -p 8000:8000 my-docker-image
