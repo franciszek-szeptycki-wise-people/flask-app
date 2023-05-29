@@ -16,11 +16,6 @@ jobs:
           key: ${{ secrets.DROPLET_SSH_KEY }}
           script: |
             cd /flask-app
+            docker-compose down
             git pull
-
-            docker stop $(docker ps -aq)
-            docker rm $(docker ps -aq)
-            docker rmi $(docker images -aq)
-
-            docker pull my-docker-image
-            docker run -dp 8000:8000 my-docker-image
+            docker-compose up -d --build
