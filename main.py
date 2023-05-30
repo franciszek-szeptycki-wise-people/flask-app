@@ -6,4 +6,5 @@ app = Flask(__name__)
 def index():
     return 'Web App with Python Flask and Docker!'
 
+
 app.run(host='0.0.0.0', port=8000)
