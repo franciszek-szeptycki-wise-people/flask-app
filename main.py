@@ -4,7 +4,6 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return 'Web App with Python Flask and Docker!'
-
+    return 'Web App with Python Flask and Docker and Buddy!'
 
 app.run(host='0.0.0.0', port=8000)
